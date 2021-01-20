@@ -37,7 +37,7 @@ class IB:
     def __create_random_directory(self):
         try:
             # Generates a random name
-            name = '_' + \
+            name = 'IB_' + \
                 ''.join(random.choices(
                     string.ascii_uppercase + string.digits, k=6))
             # Creating the Directory
