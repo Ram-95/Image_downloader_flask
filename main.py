@@ -11,7 +11,7 @@ def index():
     if request.method == 'GET':
         url = request.args.get("url")
         if url is not None:
-            print(f'\nURL HERE: {url}\n')
+            print(f'\nURL: {url}\n')
             obj = IB.IB(url)
             obj.start()
             print(obj.imgs_dir)

@@ -14,7 +14,8 @@ def send_mail(filename, caption=""):
     recipient = 'ramm.y2k@gmail.com'
     #Email Structure
     msg = EmailMessage()
-    msg['Subject'] = filename + ' Gallery'
+    msg['Subject'] = filename.split('\\')[-1] + ' Gallery'
+    print(filename.split('\\')[-1] + ' Gallery')
     msg['From'] = EMAIL_ADDRESS
     msg['To'] = recipient
     msg.set_content(f'Hi,\n\nPlease find *** {filename} *** gallery in the attachment.\n<<{caption}>>\n\n\nThank you,\nPython Script')

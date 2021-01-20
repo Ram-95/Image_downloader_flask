@@ -24,6 +24,7 @@ class IB:
             self.main_dir = os.getcwd() + '\\'
             self.imgs_dir = self.main_dir
             self.img_urls = []
+            self.send_mail = False
         except Exception as e:
             print(f'***** EXCEPTION *****\n{e}')
 
@@ -100,6 +101,7 @@ class IB:
     def __zip_images(self, directory):
         try:
             '''Zips the contents of the Directory'''
+            directory = directory.split('\\')[-1]
             shutil.make_archive(directory, 'zip', directory)
             print(f'\nZip Successful.')
         except Exception as e:
@@ -125,7 +127,8 @@ class IB:
         #Navigating back to the main directory
         os.chdir(self.main_dir)
         self.__zip_images(os.path.basename(self.imgs_dir))
-        self.__send_mail(self.imgs_dir)
+        if self.send_mail:
+            self.__send_mail(self.imgs_dir)
         # Deleting the uncompressed directory after zipping
         shutil.rmtree(self.imgs_dir)
         print(f'\nMain Directory deleted. <{self.imgs_dir}>\n')
@@ -136,7 +139,7 @@ class IB:
 
 # Driver Code
 '''
-url = 'http://www.idlebrain.com/movie/photogallery/maheshbabu27/index.html'
+url = ''
 i = IB(url)
 i.start()
 
