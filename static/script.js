@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    var gallery = ''
     $('.fetch').on('click', function () {
         url = $(".IB_url").val();
         if (url == '') {
@@ -17,10 +18,16 @@ $(document).ready(function () {
                 data: {
                     url: url,
                 },
-                success: function () {
+                success: function (data) {
                     //alert('URL captured');
+                    $('.download_section').css('visibility', 'visible');
+                    gallery = data;
                 }
-            })
+            });
         }
+    });
+
+    $('.download_btn').on('click', function () {
+        location.href = gallery;
     });
 });

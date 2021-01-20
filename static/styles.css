@@ -41,3 +41,18 @@
 .status {
     color: green;
 }
+
+.download_section {
+    text-align: center;
+    margin-top: 1rem;
+    visibility: hidden;
+}
+
+.fetch {
+    background-color: #112cd2;
+    border: none;
+}
+
+.fetch:hover {
+    background-color: #3b51e2;
+}
