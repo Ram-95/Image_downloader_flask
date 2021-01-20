@@ -11,11 +11,12 @@ EMAIL_PASSWORD = os.environ.get('EMAIL_PASS')
 
 def send_mail(filename, caption=""):
     '''Sends only .zip files. Else raises Exception.'''
+    recipient = 'ramm.y2k@gmail.com'
     #Email Structure
     msg = EmailMessage()
     msg['Subject'] = filename + ' Gallery'
     msg['From'] = EMAIL_ADDRESS
-    msg['To'] = 'ramm.y2k@gmail.com'
+    msg['To'] = recipient
     msg.set_content(f'Hi,\n\nPlease find *** {filename} *** gallery in the attachment.\n<<{caption}>>\n\n\nThank you,\nPython Script')
     ext = '.zip'
 
@@ -41,4 +42,4 @@ def send_mail(filename, caption=""):
         smtp.send_message(msg)
 
 
-    print('EMAIL SENT SUCCESSFULLY.')
+    print(f'EMAIL SENT SUCCESSFULLY to "{recipient}"')

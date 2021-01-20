@@ -124,23 +124,13 @@ class IB:
             print('Empty Directory deleted.')
         #Navigating back to the main directory
         os.chdir(self.main_dir)
-        # Extracting the Gallery name
-        gallery_dir = self.imgs_dir.split('/')[-1]
-
-        # User input whether to Zip files or not
-        ch = input('Would you like to Zip the Images? (Yes: y|Y  No: Press any key.): ')
-        if ch in ['y', 'Y']:
-            self.__zip_images(os.path.basename(self.imgs_dir))
-
-        # Waiting for zipping to complete
-        time.sleep(0.5)
-
-        # User input whether to Email the files or not
-        zip_file = os.path.basename(self.imgs_dir) + '.zip'
-        if zip_file in os.listdir():
-            ch2 = input('Would you like to Email the directory? (Yes: y|Y  No: Press any key.): ')
-            if ch2 in ['y', 'Y']:
-                self.__send_mail(os.path.basename(self.imgs_dir))
+        self.__zip_images(os.path.basename(self.imgs_dir))
+        self.__send_mail(self.imgs_dir)
+        # Deleting the uncompressed directory after zipping
+        shutil.rmtree(self.imgs_dir)
+        print(f'\nMain Directory deleted. <{self.imgs_dir}>\n')
+        
+        
         
             
 
