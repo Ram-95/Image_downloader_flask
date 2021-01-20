@@ -13,9 +13,9 @@ def index():
         if url is not None:
             print(f'\nURL: {url}\n')
             obj = IB.IB(url)
-            obj.start()
-            print(obj.imgs_dir)
-            return obj.imgs_dir
+            invalid_url = obj.start()
+            #print(f'INVALID URL: {invalid_url}')
+            return 'True' if invalid_url else 'False'
     else:
         error = 'Invalid URL'
     return render_template('index.html', error=error)
