@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <link rel="icon" type="image/png" href="/favicon.ico"/>
+    <link rel="icon" type="image/png" href="/favicon.ico" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IB Downloader</title>
@@ -19,21 +19,16 @@
 
 <body>
     <div class="container root">
-        {% if error %}
-        <small>Error: {{ error }}</small>
-        {% endif %}
         <h2 class="title mb-4">IB Downloader</h2>
         <div class="container" style="display: flex;">
-            <input class="IB_url" type="text" value="" placeholder="Enter IB URL" autofocus>
+            <input class="IB_url form-control" type="text" value="" placeholder="Enter IB URL" autofocus>
             <button class="btn btn-success ml-3 fetch"><strong>
                     Go</strong></button>
         </div>
+        <div class="loader"></div>
         <div class="notify">
             <span class="warning"></span>
             <span class="status"></span>
-        </div>
-        <div class="download_section">
-            <a href="#" class="download_btn btn btn-success" download>Download</a>
         </div>
     </div>
 </body>

@@ -4,6 +4,10 @@
     margin: 0;
 }
 
+body {
+    background-color: mintcream;
+}
+
 .root {
     margin: 10% auto;
     padding: 10px;
@@ -17,12 +21,11 @@
     font-size: 1.5rem;
     outline: none;
     padding: 10px;
-    border: 2px solid blueviolet;
 }
 
 .title {
     text-align: center;
-    font-size: 2.6rem;
+    font-size: 3rem;
     font-family: cursive;
     font-weight: 600;
 }
@@ -42,12 +45,6 @@
     color: green;
 }
 
-.download_section {
-    text-align: center;
-    margin-top: 1rem;
-    visibility: hidden;
-}
-
 .fetch {
     background-color: #112cd2;
     border: none;
@@ -55,4 +52,26 @@
 
 .fetch:hover {
     background-color: #3b51e2;
+}
+
+.loader {
+    margin: 15px auto;
+    border: 10px solid #f3f3f3;
+    /* Light grey */
+    border-top: 10px solid #3498db;
+    /* Blue */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1.2s linear infinite;
+    visibility: hidden;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

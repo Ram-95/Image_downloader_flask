@@ -6,11 +6,9 @@ $(document).ready(function () {
             alert('Invalid URL');
         }
         else {
-            /*
             $('.notify').css('visibility', 'visible');
-            $('.status').text('Downloading status..');
-            */
-            //alert(url);
+            $('.loader').css('visibility', 'visible');
+            $('.status').text('Processing...');
             $.ajax({
                 type: 'GET',
                 url: '/',
@@ -20,14 +18,11 @@ $(document).ready(function () {
                 },
                 success: function (data) {
                     //alert('URL captured');
-                    $('.download_section').css('visibility', 'visible');
-                    gallery = data;
+                    $('.loader').css('display', 'none');
+                    $('.status').text('Images downloaded and sent to your mail.');
+                    $('.IB_url').val('');
                 }
             });
         }
-    });
-
-    $('.download_btn').on('click', function () {
-        location.href = gallery;
     });
 });
