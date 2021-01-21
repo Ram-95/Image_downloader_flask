@@ -75,3 +75,82 @@ body {
         transform: rotate(360deg);
     }
 }
+
+/* CSS of homepage.html*/
+
+.main_container {
+    background-color: rgb(148, 34, 34);
+    padding: 10px;
+    margin: 15% auto;
+    text-align: center;
+}
+
+.choices {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgb(148, 34, 34);
+    padding: 10px;
+    margin: 5%;
+    align-items: center;
+    justify-content: center;
+}
+
+.choice_links {
+    flex: 5%;
+    margin: 10px;
+    border: 2px double #fff;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 1.5rem;
+    color: white;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.choice_links:hover {
+    text-decoration: none;
+    color: black;
+    background-color: white;
+}
+
+.main_title {
+    color: white;
+    font-weight: 700;
+    margin: 0 auto;
+}
+
+.main_title h2 {
+    font-size: 3rem;
+}
+
+/* End of CSS of homepage.html*/
+
+/* CSS for RG.html */
+
+/* End of CSS for RG.html */
+
+/* Media Queries */
+
+/* On screens that are 992px wide or less, go from four columns to two columns */
+
+@media screen and (max-width: 992px) {
+    .choices_links {
+        flex: 50%;
+    }
+}
+
+/* On screens that are 600px wide or less, make the columns stack on top of each other instead of next to each other */
+
+@media screen and (max-width: 600px) {
+    .choice_links {
+        flex-direction: column;
+        /*flex-wrap: wrap;*/
+        font-size: 1.2rem;
+    }
+    .main_title h2 {
+        font-size: 2rem;
+    }
+    .main_container {
+        margin: 25% auto;
+    }
+}

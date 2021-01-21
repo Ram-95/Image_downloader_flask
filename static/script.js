@@ -1,6 +1,6 @@
 $(document).ready(function () {
     /* Function to check if the provided URL is really IB URL.*/
-    function is_valid_url(url) {
+    function is_valid_url_IB(url) {
         // Regular expression for: http://www.idlebrain.com/movie/photogallery/<Galleryname>/index.html
         return /^(http:\/\/)(www\.)?idlebrain.com\/movie\/photogallery\//.test(url);
     }
@@ -10,7 +10,7 @@ $(document).ready(function () {
         //alert(is_valid_url(url));
 
         // If URL is not VALID, then alert the user.
-        if (!is_valid_url(url)) {
+        if (!is_valid_url_IB(url)) {
             alert('Invalid URL');
         }
         // Else continue with downloading images
@@ -22,7 +22,7 @@ $(document).ready(function () {
             $('.status').text('Processing...');
             $.ajax({
                 type: 'GET',
-                url: '/',
+                url: '/IB',
                 cache: false,
                 data: {
                     url: url,

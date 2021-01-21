@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}
+    Idlebrain
+{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+    <div class="container root">
+        <a href="{{ url_for('homepage') }}">Back to Home</a>
+        <h2 class="title mb-4">IB Downloader</h2>
+        <div class="container" style="display: flex;">
+            <input class="IB_url form-control" type="text" value="" placeholder="Enter IB URL" autofocus>
+            <button class="btn btn-success ml-3 fetch"><strong>
+                    Go</strong></button>
+        </div>
+        <div class="loader"></div>
+        <div class="notify">
+            <span class="warning"></span>
+            <span class="status"></span>
+        </div>
+    </div>
+{% endblock %}
+

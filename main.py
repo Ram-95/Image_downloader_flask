@@ -1,12 +1,17 @@
-from flask import Flask, escape, request, render_template, send_from_directory
+from flask import Flask, escape, request, render_template, send_from_directory, url_for
 import IB_scrapper as IB
 import os
 
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET'])
-def index():
+@app.route('/')
+def homepage():
+    return render_template('homepage.html')
+
+
+@app.route('/IB', methods=['GET', 'POST'])
+def Idlebrain():
     error = None
     if request.method == 'GET':
         url = request.args.get("url")
@@ -18,7 +23,12 @@ def index():
             return 'True' if invalid_url else 'False'
     else:
         error = 'Invalid URL'
-    return render_template('index.html', error=error)
+    return render_template('IB.html', error=error)
+
+
+@app.route('/RG')
+def ragalahari():
+    return render_template('RG.html')
 
 
 @app.route('/favicon.ico')
@@ -27,9 +37,9 @@ def favicon():
                           'favicon.ico',mimetype='image/vnd.microsoft.icon')
 
 
-@app.route('/hello/<name>')
+@app.route('/hello')
 def hello(name=None):
-    return render_template('hello.html', name=name)
+    return render_template('homepage.html', name=name)
 
 @app.route('/about')
 def about():

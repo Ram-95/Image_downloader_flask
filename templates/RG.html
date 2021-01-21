@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}
+    Ragalahari
+{% endblock %}
+{% block head %}
+    {{ super() }}
+    <style>
+        body {
+            background-color: #d0f7e3;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="container root RG">
+    <a href="{{ url_for('homepage') }}">Back to Home</a>
+    <h2 class="title mb-4">RG Downloader</h2>
+    <div class="container" style="display: flex;">
+        <input class="IB_url form-control" type="text" value="" placeholder="Enter RG URL" autofocus>
+        <button class="btn btn-success ml-3 fetch"><strong>
+                Go</strong></button>
+    </div>
+    <div class="loader"></div>
+    <div class="notify">
+        <span class="warning"></span>
+        <span class="status"></span>
+    </div>
+</div>
+{% endblock %}
