@@ -9,6 +9,9 @@ __pycache__/
 _*/
 TO-DO
 *.zip
+RG_*/
+IB_*/
+CJ_*/
 
 # Distribution / packaging
 .Python
