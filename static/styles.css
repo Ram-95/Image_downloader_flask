@@ -98,7 +98,7 @@ body {
 .choice_links {
     flex: 5%;
     margin: 10px;
-    border: 2px double #fff;
+    border: 2px solid #fff;
     border-radius: 8px;
     padding: 10px;
     font-size: 1.5rem;
@@ -121,6 +121,15 @@ body {
 
 .main_title h2 {
     font-size: 3rem;
+}
+
+.site_logo {
+    width: 100px;
+    height: 100px;
+}
+
+.root a {
+    margin-left: 1rem;
 }
 
 /* End of CSS of homepage.html*/
