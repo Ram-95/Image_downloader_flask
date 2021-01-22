@@ -8,7 +8,7 @@ $(document).ready(function () {
 
     function is_valid_url_RG(url) {
         /* m.ragalahari.com -- is for mobile. So accept if url has either www./m.  */
-        return /^(http(s)?:\/\/)((www|m)\.)?ragalahari.com\/(movie|actor|actress)\//.test(url);
+        return /^(http(s)?:\/\/)((www|m)\.)?ragalahari.com\/(movie(s)?|actor|actress|localevents)\//.test(url);
     }
 
     /* Function that does some CSS manipulation when given URL is valid */
