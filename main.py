@@ -1,6 +1,7 @@
 from flask import Flask, escape, request, render_template, send_from_directory, url_for
 import IB_scrapper as IB
 import os
+import RG_scrapper as RG
 
 
 app = Flask(__name__)
@@ -17,8 +18,8 @@ def Idlebrain():
         url = request.args.get("url")
         if url is not None:
             print(f'\nURL: {url}\n')
-            obj = IB.IB(url)
-            invalid_url = obj.start()
+            IB_obj = IB.IB(url)
+            invalid_url = IB_obj.start()
             #print(f'INVALID URL: {invalid_url}')
             return 'True' if invalid_url else 'False'
     else:
@@ -26,10 +27,23 @@ def Idlebrain():
     return render_template('IB.html', error=error)
 
 
-@app.route('/RG')
+@app.route('/RG', methods=['GET', 'POST'])
 def ragalahari():
-    return render_template('RG.html')
+    error = None
+    if request.method == 'GET':
+        url = request.args.get("url")
+        if url is not None:
+            print(f'\nURL: {url}\n')
+            invalid_url = RG.start(url)
+            return 'True' if invalid_url else 'False'
+    else:
+        error = 'Invalid URL'
+    return render_template('RG.html', error=error)
 
+
+@app.route('/CJ')
+def cinejosh():
+    return render_template('CJ.html')
 
 @app.route('/favicon.ico')
 def favicon():
