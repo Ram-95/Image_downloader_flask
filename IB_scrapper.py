@@ -140,6 +140,8 @@ class IB:
         self.__zip_images(os.path.basename(self.imgs_dir))
         if self.send_mail:
             self.__send_mail(self.imgs_dir)
+        else:
+            print(f'\n "send_mail" flag is set to False. Email not sent. \n')
         # Deleting the uncompressed directory after zipping
         shutil.rmtree(self.imgs_dir)
         print(f'\nMain Directory deleted. <{self.imgs_dir}>\n')
