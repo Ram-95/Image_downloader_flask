@@ -30,7 +30,10 @@ class IB:
             # flag to know if the provided URL exists or Not.
             # invalid_url = False [URL exists. Download Images]
             # invalid_url = True [URL Doesn't exist. Return]
-            self.invalid_url = False
+            if self.response.status_code == 200:
+                self.invalid_url = False
+            else:
+                self.invalid_url = True
         except Exception as e:
             print(f'***** EXCEPTION *****\n{e}')
 
@@ -50,23 +53,8 @@ class IB:
             raise Exception(
                 f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
 
-    '''
-    def __get_img_urls(self):
-        try:
-            b = self.soup.findAll('td', class_='thumbnail_image')
-            for i in b:
-                try:
-                    x = i.find('img')['src']
-                    x = x.replace('th_','')
-                    self.img_urls.append(self.base + x)
-                except:
-                    pass
-            print(f'\nImages URLs captured.')
-        except Exception as e:
-            print(f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
-    '''
-
     # More generic code - Works for both Old and New layout of galleries
+
     def __get_img_urls(self):
         try:
             b = self.soup.findAll('img')
@@ -125,24 +113,30 @@ class IB:
             raise Exception(e)
 
     def start(self):
-        self.__create_random_directory()
-        self.__get_img_urls()
-        self.__download()
-        if not os.listdir():
-            # Deleting the imgs_directory if empty
+        if self.invalid_url == False:
+            self.__create_random_directory()
+            self.__get_img_urls()
+            self.__download()
+            if not os.listdir():
+                # Deleting the imgs_directory if empty
+                os.chdir(self.main_dir)
+                os.rmdir(self.imgs_dir)
+                self.invalid_url = True
+                print('Empty Directory deleted.')
+                return self.invalid_url
+            # Navigating back to the main directory
             os.chdir(self.main_dir)
-            os.rmdir(self.imgs_dir)
-            self.invalid_url = True
-            print('Empty Directory deleted.')
+            self.__zip_images(os.path.basename(self.imgs_dir))
+            if self.send_mail:
+                self.__send_mail(self.imgs_dir)
+            else:
+                print(f'\n "send_mail" flag is set to False. Email not sent. \n')
+            # Deleting the uncompressed directory after zipping
+            shutil.rmtree(self.imgs_dir)
+            print(f'\nMain Directory deleted. <{self.imgs_dir}>\n')
+        else:
+            print('Invalid URL')
             return self.invalid_url
-        # Navigating back to the main directory
-        os.chdir(self.main_dir)
-        self.__zip_images(os.path.basename(self.imgs_dir))
-        if self.send_mail:
-            self.__send_mail(self.imgs_dir)
-        # Deleting the uncompressed directory after zipping
-        shutil.rmtree(self.imgs_dir)
-        print(f'\nMain Directory deleted. <{self.imgs_dir}>\n')
 
 
 # Driver Code
