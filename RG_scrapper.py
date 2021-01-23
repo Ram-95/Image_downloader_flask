@@ -19,7 +19,12 @@ class RG:
         self.html = self.response.text
         self.soup = bs.BeautifulSoup(self.html, 'lxml')
         self.ext = '.jpg'
-        self.invalid_url = False
+        # If status_code is 200 then page exists. So it is a valid URL.
+        if self.response.status_code == 200:
+            self.invalid_url = False
+        else:
+            self.invalid_url = True
+
         self.mail_send = False
         self.paging_exists = self.soup.find('td', id='pagingCell')
         if self.paging_exists:
@@ -43,14 +48,15 @@ class RG:
 
     def download_images(self, page_no):
         '''Scrapes the urls of images and saves them in list.'''
-        d = self.soup.find('div', id='galdiv').findAll(
-            'img', class_='thumbnail')
-        if d is None or d == []:
-            d = self.soup.find('div', id='galdiv').findAll('img')
-
         global count
 
+        gallery_exists = self.soup.find('div', id='galdiv')
+        d = gallery_exists.findAll('img', class_='thumbnail')
+        if d is None or d == []:
+            d = gallery_exists.findAll('img')
+
         print(f'Page {page_no}: Downloading Images...\n')
+        '''Code for Downloading the Images.'''
         for i in d:
             x = i['src']
             x = x.replace('t.jpg', '.jpg')
@@ -94,51 +100,49 @@ class RG:
             raise Exception(e)
 
 
-
 # Driver Code
 ''' Function that initiates scrapping. '''
 def start(url):
-    # Global variable - Base directory
-    base_dir = os.getcwd() + '\\'
-
     # Creating an RG object
     rg = RG(url)
+    if rg.invalid_url == False:
+        # Global variable - Base directory
+        base_dir = os.getcwd() + '\\'
 
-    # Gettinig the Page URLs
-    pages = rg.get_page_urls()
-    #print(*rg.get_page_urls(), sep="\n")
+        # Getting the Page URLs
+        pages = rg.get_page_urls()
+        print(pages, sep="\n")
 
-    # Creating a Random directory
-    dir_name = rg.create_dir(base_dir)
-    caption = url.split('/')[-1].split('.')[0]
+        # Creating a Random directory
+        dir_name = rg.create_dir(base_dir)
+        caption = url.split('/')[-1].split('.')[0]
 
-    # Global variable to name the images
-    global count
-    count = 1
+        # Global variable to name the images
+        global count
+        count = 1
 
-    # Creating an RG object of all the pages urls and downloading
-    for i in range(1):
-        rg = RG(pages[i])
-        rg.download_images(i+1)
-    print(f'**** {count} images downloaded. ****')
+        # Creating an RG object of all the pages urls and downloading
+        for i in range(len(pages)):
+            rg = RG(pages[i])
+            rg.download_images(i+1)
+        print(f'**** {count} images downloaded. ****')
 
-    # Navigation to the base directory after downloading is complete
-    os.chdir(base_dir)
+        # Navigation to the base directory after downloading is complete
+        os.chdir(base_dir)
 
-    # Zipping files
-    rg.zip_images(dir_name)
+        # Zipping files
+        rg.zip_images(dir_name)
 
-    # Deleting the gallery directory
-    '''
-    shutil.rmtree(dir_name)
-    print(f'Main directory deleted: {dir_name}')
-    '''
+        # Deleting the gallery directory
+        shutil.rmtree(dir_name)
+        print(f'Main directory deleted: {dir_name}')
 
-    # Emailing the file
-    '''Send mail only if 'mail_send' flag is True.'''
-    if rg.mail_send:
-        rg.send_mail(os.path.basename(dir_name), caption)
+        # Emailing the file
+        '''Send mail only if 'mail_send' flag is True.'''
+        if rg.mail_send:
+            rg.send_mail(os.path.basename(dir_name), caption)
+        else:
+            print("\n'mail_send' flag is set to False. Email not sent.\n")
     else:
-        print("\n'mail_send' flag is set to False. Email not sent.\n")
-
+        print('\nInvalid URL\n')
     return rg.invalid_url
