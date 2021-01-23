@@ -10,6 +10,13 @@ $(document).ready(function () {
         /* m.ragalahari.com -- is for mobile. So accept if url has either www./m.  */
         return /^(http(s)?:\/\/)((www|m)\.)?ragalahari.com\/(movie(s)?|actor|actress|localevents)\//.test(url);
     }
+    
+    function is_valid_url_CJ(url) {
+        /*  sample URL: https://www.cinejosh.com/gallery-thumbs/6982/1/0/1/mahesh-babu-new-stills.html
+            common: https://www.cinejosh.com/gallery-thumbs
+        */
+        return /^(http(s)?:\/\/)(www\.)?cinejosh.com\/(gallery-thumbs)\//.test(url)
+    }
 
     /* Function that does some CSS manipulation when given URL is valid */
     function if_valid_url() {
@@ -68,7 +75,6 @@ $(document).ready(function () {
         url = $("." + site + "_url").val();
         //alert(is_valid_url(url));
 
-        // If URL is not VALID, then alert the user.
         /* Idlebrain */
         if (site == 'IB') {
             if (!is_valid_url_IB(url)) {
@@ -82,6 +88,16 @@ $(document).ready(function () {
         /* Ragalahari */
         else if (site == 'RG') {
             if (!is_valid_url_RG(url)) {
+                if_invalid_url();
+            }
+            else {
+                if_valid_url();
+                ajax_function(url);
+            }
+        }
+        /* Cinejosh */
+        else if (site == 'CJ') {
+            if (!is_valid_url_CJ(url)) {
                 if_invalid_url();
             }
             else {
