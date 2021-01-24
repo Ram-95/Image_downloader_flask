@@ -111,7 +111,7 @@ def start(url):
 
         # Getting the Page URLs
         pages = rg.get_page_urls()
-        print(pages, sep="\n")
+        #print(pages, sep="\n")
 
         # Creating a Random directory
         dir_name = rg.create_dir(base_dir)
