@@ -2,7 +2,7 @@
 
 A flask app to scrape and download images from Idlebrain, Ragalahari, Cinejosh and Blogspot/sumon4all/tollywoodhq.com galleries.
 
-## Steps for first time use
+### Steps for first time use
   - Install all the dependencies from ```requirements.txt```.
   - Open command prompt in the projects directory and write the following commands
     - ```set FLASK_APP = main.py``` - This will tell Flask to point the application to ```main.py```.
