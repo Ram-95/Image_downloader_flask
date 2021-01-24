@@ -10,12 +10,21 @@ $(document).ready(function () {
         /* m.ragalahari.com -- is for mobile. So accept if url has either www./m.  */
         return /^(http(s)?:\/\/)((www|m)\.)?ragalahari.com\/(movie(s)?|actor|actress|localevents)\//.test(url);
     }
-    
+
     function is_valid_url_CJ(url) {
-        /*  sample URL: https://www.cinejosh.com/gallery-thumbs/6982/1/0/1/mahesh-babu-new-stills.html
-            common: https://www.cinejosh.com/gallery-thumbs
-        */
-        return /^(http(s)?:\/\/)(www\.)?cinejosh.com\/(gallery-thumbs)\//.test(url)
+        /*  common: https://www.cinejosh.com/gallery-thumbs */
+        return /^(http(s)?:\/\/)(www\.)?cinejosh.com\/(gallery-thumbs)\//.test(url);
+    }
+
+    function is_valid_url_BS(url) {
+        // Tollywoodhq
+        tq = /^(http(s)?:\/\/)(www\.)?tollywoodhq.com/.test(url);
+        // Sumon4all
+        s4 = /^(http:\/\/)(www\.)?sumon4all.blogspot.com/.test(url);
+        // Blogspot
+        bs = /^(http:\/\/)(www\.)[a-zA-Z0-9]*\.[blogspot.com]/.test(url);
+        
+        return tq || s4 || bs;
     }
 
     /* Function that does some CSS manipulation when given URL is valid */
@@ -98,6 +107,16 @@ $(document).ready(function () {
         /* Cinejosh */
         else if (site == 'CJ') {
             if (!is_valid_url_CJ(url)) {
+                if_invalid_url();
+            }
+            else {
+                if_valid_url();
+                ajax_function(url);
+            }
+        }
+        /* Blospot/s4all/Tollywoodhq */
+        else if (site == 'BS') {
+            if (!is_valid_url_BS(url)) {
                 if_invalid_url();
             }
             else {
