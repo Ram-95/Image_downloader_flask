@@ -23,7 +23,7 @@ $(document).ready(function () {
         s4 = /^(http:\/\/)(www\.)?sumon4all.blogspot.com/.test(url);
         // Blogspot
         bs = /^(http:\/\/)(www\.)[a-zA-Z0-9]*\.[blogspot.com]/.test(url);
-        
+
         return tq || s4 || bs;
     }
 
