@@ -3,6 +3,7 @@ import IB_scrapper as IB
 import os
 import RG_scrapper as RG
 import CJ_scrapper as CJ
+import BS_scrapper as BS
 
 
 app = Flask(__name__)
@@ -54,6 +55,20 @@ def cinejosh():
     else:
         error = 'Invalid URL'
     return render_template('CJ.html', error=error)
+
+
+@app.route('/BS', methods=['GET', 'POST'])
+def bst():
+    error = None
+    if request.method == 'GET':
+        url = request.args.get("url")
+        if url is not None:
+            print(f'\nURL: {url}\n')
+            invalid_url = BS.start(url)
+            return 'True' if invalid_url else 'False'
+    else:
+        error = 'Invalid URL'
+    return render_template('BS.html', error=error)
 
 
 @app.route('/favicon.ico')
