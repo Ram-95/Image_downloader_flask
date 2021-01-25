@@ -24,8 +24,6 @@ class RG:
             self.invalid_url = False
         else:
             self.invalid_url = True
-
-        self.mail_send = False
         self.paging_exists = self.soup.find('td', id='pagingCell')
         if self.paging_exists:
             self.t = self.paging_exists.findAll('a', class_='otherPage')
@@ -138,11 +136,8 @@ def start(url):
         print(f'Main directory deleted: {dir_name}')
 
         # Emailing the file
-        '''Send mail only if 'mail_send' flag is True.'''
-        if rg.mail_send:
-            rg.send_mail(os.path.basename(dir_name), caption)
-        else:
-            print("\n'mail_send' flag is set to False. Email not sent.\n")
+        rg.send_mail(os.path.basename(dir_name), caption)
+        
     else:
         print('\nInvalid URL\n')
     return rg.invalid_url

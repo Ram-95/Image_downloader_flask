@@ -25,8 +25,6 @@ class IB:
             self.main_dir = os.getcwd() + '\\'
             self.imgs_dir = self.main_dir
             self.img_urls = []
-            # flag to know whether to send email or not.
-            self.send_mail = False
             # flag to know if the provided URL exists or Not.
             # invalid_url = False [URL exists. Download Images]
             # invalid_url = True [URL Doesn't exist. Return]
@@ -127,10 +125,10 @@ class IB:
             # Navigating back to the main directory
             os.chdir(self.main_dir)
             self.__zip_images(os.path.basename(self.imgs_dir))
-            if self.send_mail:
-                self.__send_mail(self.imgs_dir)
-            else:
-                print(f'\n "send_mail" flag is set to False. Email not sent. \n')
+            
+            # Emaling the file
+            self.__send_mail(self.imgs_dir)
+            
             # Deleting the uncompressed directory after zipping
             shutil.rmtree(self.imgs_dir)
             print(f'\nMain Directory deleted. <{self.imgs_dir}>\n')

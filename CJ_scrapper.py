@@ -31,7 +31,6 @@ class CJ:
         if self.is_gallery is None or self.is_gallery == []:
             self.invalid_url = True
         
-        self.mail_send = False
         self.paging_exists = self.soup.find('ul', class_='pagination')
         if self.paging_exists:
             self.t = self.paging_exists.findAll('li')
@@ -149,11 +148,7 @@ def start(url):
         print(f'Main directory deleted: {dir_name}')
         
         # Emailing the file
-        '''Send mail only if 'mail_send' flag is True.'''
-        if cj.mail_send:
-            cj.send_mail(os.path.basename(dir_name), caption)
-        else:
-            print("\n'mail_send' flag is set to False. Email not sent.\n")
+        cj.send_mail(os.path.basename(dir_name), caption)
     else:
         print(f'\nInvalid URL.\n')
     

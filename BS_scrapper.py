@@ -28,7 +28,6 @@ class BS:
             self.invalid_url = True
         self.img_urls = []
         self.main_dir = os.getcwd() + '\\'
-        self.mail_send = False
         self.caption = self.url.split('/')[-1][:-5].title()
 
 
@@ -46,7 +45,7 @@ class BS:
         a = self.soup.findAll('a')
         for i in a:
             try:
-                if i['href'].endswith('.jpg'):
+                if i['href'].endswith('.jpg') or i['href'].endswith('.png'):
                     self.img_urls.append(self.base_url + i['href'])
             except Exception:
                 continue
@@ -54,6 +53,7 @@ class BS:
         if not self.img_urls:
             print(f'No Images in this site.')
         else:
+            #print(f'Img_urls: {self.img_urls}')
             print(f'\nImage URLs captured.')
 
 
@@ -109,10 +109,8 @@ def start(url):
             print(f'Main directory deleted: {bs.imgs_dir}')
             
             # Email the files
-            if bs.mail_send:
-                bs.send_mail(os.path.basename(bs.imgs_dir))
-            else:
-                print("\n'mail_send' flag is set to False. Email not sent.\n")
+            bs.send_mail(os.path.basename(bs.imgs_dir))
+
         else:
             bs.invalid_url = True
             return bs.invalid_url
