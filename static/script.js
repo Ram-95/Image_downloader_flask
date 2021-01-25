@@ -22,7 +22,7 @@ $(document).ready(function () {
         // Sumon4all
         s4 = /^(http:\/\/)(www\.)?sumon4all.blogspot.com/.test(url);
         // Blogspot
-        bs = /^(http:\/\/)(www\.)[a-zA-Z0-9]*\.[blogspot.com]/.test(url);
+        bs = /^(http(s)?:\/\/)(www\.)?[a-zA-Z0-9-_]*\.[blogspot.com]/.test(url);
 
         return tq || s4 || bs;
     }
@@ -33,7 +33,7 @@ $(document).ready(function () {
         $('.loader').css('display', '');
         $('.loader').css('visibility', 'visible');
         $('.status').css('color', 'blue');
-        $('.status').text('Processing...');
+        $('.status').text('Processing... This may take a few minutes...');
     }
 
     function if_invalid_url() {
