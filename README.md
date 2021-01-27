@@ -1,6 +1,6 @@
 # Image_Downloader_Flask
 
-A flask app to scrape and download images from Idlebrain, Ragalahari, Cinejosh and Blogspot/sumon4all/tollywoodhq.com galleries.
+A flask app to scrape and download images from websites like - Idlebrain, Ragalahari, Cinejosh and Blogspot/sumon4all/tollywoodhq.com galleries.
 
 ### Steps for first time use
   - Install all the dependencies from ```requirements.txt```.
