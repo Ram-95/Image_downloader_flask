@@ -67,6 +67,15 @@ body {
     }
 }
 
+.download_div {
+    text-align: center;
+}
+
+.download_btn {
+    visibility: hidden;
+    margin-top: 1.2rem;
+}
+
 /* CSS of homepage.html*/
 
 .main_container {
