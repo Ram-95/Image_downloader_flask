@@ -49,7 +49,16 @@ $(document).ready(function () {
     function if_ajax_valid_url() {
         $('.loader').css('display', 'none');
         $('.status').css('color', 'green');
-        $('.status').text('Images downloaded and sent to your mail.');
+        $('.status').text('Images downloaded successfully.');
+        $('.download_btn').css('visibility', 'visible');
+        
+    }
+
+    /* Displays the Download button upon scraping and saving images. */
+    function download_function(filename) {
+        $('.download_btn').css('visibility', 'visible');
+        var path = '/download?filepath=' + filename;
+        $('.download_btn').attr('href', path);
     }
 
     function ajax_function(url) {
@@ -62,13 +71,14 @@ $(document).ready(function () {
             },
             success: function (data) {
                 /*
-                'data' is the INVALID_URL status from the backend. If INVALID_URL == 'True', then show 'Invlalid URL'
+                'data' is the INVALID_URL status from the backend. If INVALID_URL == 'True', then show 'Invalid URL'
                 else Download the images
                 */
-                //alert(data);
-                if (data == 'False') {
+                //alert(data['filename']);
+                if (data['status'] == 'False') {
                     if_ajax_valid_url();
                     $('.IB_url').val('');
+                    download_function(data['filename']);
                 }
                 else {
                     if_ajax_invalid_url();
@@ -126,4 +136,5 @@ $(document).ready(function () {
         }
 
     });
+
 });
