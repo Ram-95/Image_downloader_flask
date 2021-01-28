@@ -140,4 +140,4 @@ def start(url):
         
     else:
         print('\nInvalid URL\n')
-    return rg.invalid_url
+    return (rg.invalid_url, dir_name)

@@ -152,4 +152,4 @@ def start(url):
     else:
         print(f'\nInvalid URL.\n')
     
-    return cj.invalid_url
+    return (cj.invalid_url, dir_name)
