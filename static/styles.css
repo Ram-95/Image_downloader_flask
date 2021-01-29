@@ -66,6 +66,9 @@ body {
         transform: rotate(360deg);
     }
 }
+.notification_section {
+    margin-top: -10%;
+}
 
 .download_div {
     text-align: center;
