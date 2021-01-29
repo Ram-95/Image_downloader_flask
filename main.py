@@ -26,7 +26,6 @@ def Idlebrain():
             if not invalid_url:
                 print(zip_file_name)
                 return {'status': 'False', 'filename': zip_file_name}
-                #return ('False', zip_file_name)
             return {'status': 'True'}
     else:
         error = 'Invalid URL'
@@ -45,7 +44,6 @@ def ragalahari():
             if not invalid_url:
                 print(zip_file_name)
                 return {'status': 'False', 'filename': zip_file_name}
-                #return ('False', zip_file_name)
             return {'status': 'True'}
     else:
         error = 'Invalid URL'
@@ -64,7 +62,6 @@ def cinejosh():
             if not invalid_url:
                 print(zip_file_name)
                 return {'status': 'False', 'filename': zip_file_name}
-                #return ('False', zip_file_name)
             return {'status': 'True'}
             
     else:
@@ -79,8 +76,12 @@ def bst():
         url = request.args.get("url")
         if url is not None:
             print(f'\nURL: {url}\n')
-            invalid_url = BS.start(url)
-            return 'True' if invalid_url else 'False'
+            (invalid_url, dir_name) = BS.start(url)
+            zip_file_name = os.path.basename(dir_name) + '.zip'
+            if not invalid_url:
+                print(zip_file_name)
+                return {'status': 'False', 'filename': zip_file_name}
+            return {'status': 'True'}
     else:
         error = 'Invalid URL'
     return render_template('BS.html', error=error)
