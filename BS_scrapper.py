@@ -117,5 +117,5 @@ def start(url):
     else:
         print(f'\nInvalid URL.\n')
     
-    return bs.invalid_url
+    return (bs.invalid_url, bs.imgs_dir)
 
