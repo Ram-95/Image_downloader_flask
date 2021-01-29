@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% block head %}
     <link rel="icon" type="image/png" href="/favicon.ico" />
@@ -17,10 +18,22 @@
     <script src="/static/script.js"></script>
     {% endblock %}
 </head>
+
 <body>
     <div class="content">
         {% block content %}
         {% endblock %}
     </div>
+    <div class="notification_section">
+        <div class="loader"></div>
+        <div class="notify">
+            <span class="warning"></span>
+            <span class="status"></span>
+        </div>
+        <div class="download_div">
+            <a class="download_btn btn btn-success">Download</a>
+        </div>
+    </div>
 </body>
+
 </html>
