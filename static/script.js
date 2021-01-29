@@ -77,7 +77,7 @@ $(document).ready(function () {
                 //alert(data['filename']);
                 if (data['status'] == 'False') {
                     if_ajax_valid_url();
-                    $('.IB_url').val('');
+                    //$('.IB_url').val('');
                     download_function(data['filename']);
                 }
                 else {
@@ -91,7 +91,7 @@ $(document).ready(function () {
     $('.fetch').on('click', function () {
         site = $(this).attr("id");
         //alert('Site: ' + site);
-        url = $("." + site + "_url").val();
+        url = $("." + site + "_url").val().trim();
         //alert(is_valid_url(url));
 
         /* Idlebrain */
