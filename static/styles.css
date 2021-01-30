@@ -11,7 +11,6 @@ body {
 .root {
     margin: 10% auto;
     padding: 10px;
-    /* border: 1px solid black;*/
 }
 
 .title {
@@ -66,6 +65,7 @@ body {
         transform: rotate(360deg);
     }
 }
+
 .notification_section {
     margin-top: -10%;
 }
