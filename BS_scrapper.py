@@ -40,13 +40,19 @@ class BS:
         #Navigating to the newly created directory
         os.chdir(self.imgs_dir)
 
+        return self.imgs_dir
+        
 
     def get_img_urls(self):
         a = self.soup.findAll('a')
         for i in a:
             try:
                 if i['href'].endswith('.jpg') or i['href'].endswith('.png'):
-                    self.img_urls.append(self.base_url + i['href'])
+                    temp = i['href']
+                    if temp.startswith('http'):
+                        self.img_urls.append(self.base_url + temp)
+                    else:
+                        self.img_urls.append(self.base_url + 'http:' + temp)
             except Exception:
                 continue
         #print(self.img_urls)
@@ -54,19 +60,19 @@ class BS:
             print(f'No Images in this site.')
         else:
             #print(f'Img_urls: {self.img_urls}')
-            print(f'\nImage URLs captured.')
+            print(f'Image URLs captured.\n')
 
 
 
     def download(self):
+        global count
         try:
-            print(f'\nDownloading in progress...\n')
+            print(f'Downloading in progress... \n')
             for i in range(len(self.img_urls)):
                 r = requests.get(self.img_urls[i], stream=True)
-                with open(str(i+1)+ self.ext, 'wb') as outfile:
+                with open(str(count+1)+ self.ext, 'wb') as outfile:
                     outfile.write(r.content)
-            
-            print(f'\n******** {len(self.img_urls)} Images downloaded.********')
+                count += 1
         except Exception as e:
             raise e
 
@@ -88,34 +94,63 @@ class BS:
 
 
 def start(url):
-    # Creating a BS object
-    bs = BS(url)
-    if bs.invalid_url == False:
-        bs.get_img_urls()
-        # Continue only if the img_urls are captured.
-        if bs.img_urls:
-            bs.create_random_directory()
-            bs.download()
-            
-            #Navigating back to the main directory
-            os.chdir(bs.main_dir)
+    global count
+    count = 0
+    base_dir = os.getcwd() + '\\'
 
-            # Zip files
-            bs.zip_images(os.path.basename(bs.imgs_dir))
-            print(f'\nCaption: {bs.caption}\n')
+    if url.startswith('http://sumon4all.blogspot.com'):
+        '''This logic is for s4all webpages'''
+        bs = BS(url)
+        if bs.invalid_url == False:
+            # Create a directory
+            imgs_dir = bs.create_random_directory()
+            # Grab the page_urls 
+            d = bs.soup.findAll('div', class_='separator')
+            page_urls = d[1].findAll('a') if len(d) > 0 else []
+            page_urls = [i['href'] for i in page_urls]
+            page_urls.append(url)
 
-            # Deleting the gallery directory
-            shutil.rmtree(bs.imgs_dir)
-            print(f'Main directory deleted: {bs.imgs_dir}')
-            
-            # Email the files
-            bs.send_mail(os.path.basename(bs.imgs_dir))
-
+            # Navigate to every page and download images
+            for i in range(len(page_urls)):
+                print(f'***** Page: {i+1} *****\n')
+                bs = BS(page_urls[i])
+                bs.get_img_urls()
+                bs.download()
+            print(f'\n******** {count} Images downloaded.********')
         else:
-            bs.invalid_url = True
-            return bs.invalid_url
+            print(f'\nInvalid URL.\n')
+        
     else:
-        print(f'\nInvalid URL.\n')
-    
-    return (bs.invalid_url, bs.imgs_dir)
+        '''This logic is for BS/THQ.'''
+        # Creating a BS object
+        bs = BS(url)
 
+        if bs.invalid_url == False:
+            bs.get_img_urls()
+            # Continue only if the img_urls are captured.
+            if bs.img_urls:
+                imgs_dir = bs.create_random_directory()
+                bs.download()
+                print(f'\n******** {count} Images downloaded.********')
+            else:
+                bs.invalid_url = True
+                return bs.invalid_url
+    
+        else:
+            print(f'\nInvalid URL.\n')
+
+    #Navigating back to the main directory
+    os.chdir(base_dir)
+
+    #Zip files
+    bs.zip_images(os.path.basename(imgs_dir))
+    print(f'\nCaption: {bs.caption}\n')
+
+    # Deleting the gallery directory
+    shutil.rmtree(imgs_dir)
+    print(f'Main directory deleted: {imgs_dir}')
+    
+    # Email the files
+    bs.send_mail(os.path.basename(imgs_dir))
+    
+    return (bs.invalid_url, imgs_dir)
