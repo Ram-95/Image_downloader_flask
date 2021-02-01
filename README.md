@@ -9,4 +9,4 @@ A flask app to scrape and download images from websites like - Idlebrain, Ragala
     - ```set FLASK_DEBUG = True``` - This will tell Flask to set the debug option to ```True```. We can know the errors of our application only if ```DEBUG=True```.
   - Type ```flask run``` command to start the application.
 
-The gallery will be zipped and available for download.
+#### All the images will be saved to a directory, will be zipped and available for download.
