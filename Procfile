@@ -1,1 +1,1 @@
-web: gunicorn app:Image_downloader_flask
+web: gunicorn --bind 0.0.0.0:$PORT flaskapp:main
