@@ -1,1 +1,1 @@
-web: gunicorn app:IB_downloader_flask
+web: gunicorn app:Image_downloader_flask
