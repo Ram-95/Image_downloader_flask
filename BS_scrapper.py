@@ -27,13 +27,13 @@ class BS:
         else:
             self.invalid_url = True
         self.img_urls = []
-        self.main_dir = os.getcwd() + '\\'
+        self.main_dir = os.getcwd()
         self.caption = self.url.split('/')[-1][:-5].title()
 
 
     def create_random_directory(self):
         name = 'BST_' + ''.join(random.choices(string.ascii_uppercase + string.digits, k = 6))
-        self.imgs_dir = self.main_dir + name
+        self.imgs_dir = os.path.join(self.main_dir, name)
         #Creating the new Directory
         os.mkdir(self.imgs_dir)
         print(f"\n'{name}' directory created")
@@ -96,7 +96,7 @@ class BS:
 def start(url):
     global count
     count = 0
-    base_dir = os.getcwd() + '\\'
+    base_dir = os.getcwd()
 
     if url.startswith('http://sumon4all.blogspot.com'):
         '''This logic is for s4all webpages'''

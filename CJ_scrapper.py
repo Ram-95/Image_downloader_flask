@@ -81,7 +81,7 @@ class CJ:
             ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
 
         # Directory where images will be downloaded
-        gallery_name = base_dir + name
+        gallery_name = os.path.join(base_dir, name)
         # Creating Gallery directory
         os.mkdir(gallery_name)
 
@@ -113,7 +113,7 @@ def start(url):
     cj = CJ(url)
     if cj.invalid_url == False:
         # Global variable - Base directory
-        base_dir = os.getcwd() + '\\'
+        base_dir = os.getcwd()
 
         # Creating an CJ object
         cj = CJ(url)

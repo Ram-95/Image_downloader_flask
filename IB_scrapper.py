@@ -22,7 +22,7 @@ class IB:
             self.html = self.response.text
             self.soup = bs.BeautifulSoup(self.html, 'lxml')
             self.ext = '.jpg'
-            self.main_dir = os.getcwd() + '\\'
+            self.main_dir = os.getcwd()
             self.imgs_dir = self.main_dir
             self.img_urls = []
             # flag to know if the provided URL exists or Not.
@@ -42,7 +42,7 @@ class IB:
                 ''.join(random.choices(
                     string.ascii_uppercase + string.digits, k=6))
             # Creating the Directory
-            self.imgs_dir = self.main_dir + name
+            self.imgs_dir = os.path.join(self.main_dir, name)
             os.mkdir(self.imgs_dir)
             print(f"\n'{name}' directory created.")
             # Navigating to the newly created Directory
@@ -97,7 +97,7 @@ class IB:
     def __zip_images(self, directory):
         try:
             '''Zips the contents of the Directory'''
-            directory = directory.split('\\')[-1]
+            directory = os.path.basename(directory)
             shutil.make_archive(directory, 'zip', directory)
             print(f'\nZip Successful.')
         except Exception as e:
