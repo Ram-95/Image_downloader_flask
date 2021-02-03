@@ -1,3 +1,4 @@
+from Utilities import utilities
 import os
 import random
 import shutil
@@ -9,8 +10,9 @@ import requests
 import Email_send as email
 
 
-class RG:
+class RG(utilities):
     def __init__(self, url):
+        super().__init__()
         self.url = url
         self.headers = {
             "User-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36"}
@@ -18,7 +20,6 @@ class RG:
         self.response = requests.get(self.url, self.headers)
         self.html = self.response.text
         self.soup = bs.BeautifulSoup(self.html, 'lxml')
-        self.ext = '.jpg'
         # If status_code is 200 then page exists. So it is a valid URL.
         if self.response.status_code == 200:
             self.invalid_url = False
@@ -66,39 +67,7 @@ class RG:
 
         print(f'Page {page_no}: {count} Images Download Complete.\n\n')
 
-    def create_dir(self, base_dir):
-        # Generates a alpha-numberic random name of length = 6
-        name = 'RG_' + \
-            ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
 
-        # Directory where images will be downloaded
-        gallery_name = base_dir + name
-        # Creating Gallery directory
-        os.mkdir(gallery_name)
-
-        # Navigating to the Gallery Directory
-        os.chdir(gallery_name)
-
-        print(f'Directory: {name} created successfully.\n')
-        return gallery_name
-
-    def zip_images(self, directory):
-        try:
-            '''Zips the contents of the Directory'''
-            shutil.make_archive(directory, 'zip', directory)
-            print(f'\nZip Successful.')
-        except Exception as e:
-            print(
-                f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
-
-    def send_mail(self, directory, caption):
-        try:
-            email.send_mail(directory, caption)
-        except Exception as e:
-            raise Exception(e)
-
-
-# Driver Code
 ''' Function that initiates scrapping. '''
 def start(url):
     # Creating an RG object
@@ -112,7 +81,8 @@ def start(url):
         #print(pages, sep="\n")
 
         # Creating a Random directory
-        dir_name = rg.create_dir(base_dir)
+        dir_name = rg.create_random_directory('RG')
+
         caption = url.split('/')[-1].split('.')[0]
 
         # Global variable to name the images
@@ -132,12 +102,11 @@ def start(url):
         rg.zip_images(dir_name)
 
         # Deleting the gallery directory
-        shutil.rmtree(dir_name)
-        print(f'Main directory deleted: {dir_name}')
+        rg.delete_dir(dir_name)
 
         # Emailing the file
-        rg.send_mail(os.path.basename(dir_name), caption)
-        
+        rg.send_mail(dir_name, caption)
+
     else:
         print('\nInvalid URL\n')
     return (rg.invalid_url, dir_name)

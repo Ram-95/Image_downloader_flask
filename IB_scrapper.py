@@ -1,4 +1,5 @@
 #Idlebrain - Scrapper
+from Utilities import utilities
 import time
 import inspect
 import shutil
@@ -9,9 +10,9 @@ import string
 import os
 import Email_send as email
 
-
-class IB:
+class IB(utilities):
     def __init__(self, url):
+        super().__init__()
         try:
             self.url = url
             self.caption = url.split('/')[-2].title()
@@ -21,10 +22,6 @@ class IB:
             self.response = requests.get(self.url, self.headers)
             self.html = self.response.text
             self.soup = bs.BeautifulSoup(self.html, 'lxml')
-            self.ext = '.jpg'
-            self.main_dir = os.getcwd() + '\\'
-            self.imgs_dir = self.main_dir
-            self.img_urls = []
             # flag to know if the provided URL exists or Not.
             # invalid_url = False [URL exists. Download Images]
             # invalid_url = True [URL Doesn't exist. Return]
@@ -35,24 +32,8 @@ class IB:
         except Exception as e:
             print(f'***** EXCEPTION *****\n{e}')
 
-    def __create_random_directory(self):
-        try:
-            # Generates a random name
-            name = 'IB_' + \
-                ''.join(random.choices(
-                    string.ascii_uppercase + string.digits, k=6))
-            # Creating the Directory
-            self.imgs_dir = self.main_dir + name
-            os.mkdir(self.imgs_dir)
-            print(f"\n'{name}' directory created.")
-            # Navigating to the newly created Directory
-            os.chdir(self.imgs_dir)
-        except Exception as e:
-            raise Exception(
-                f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
-
+    
     # More generic code - Works for both Old and New layout of galleries
-
     def __get_img_urls(self):
         try:
             b = self.soup.findAll('img')
@@ -80,67 +61,29 @@ class IB:
             print(
                 f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
 
-    def __download(self):
-        try:
-            print(f'\nDownloading in progress...\n')
-            for i in range(len(self.img_urls)):
-                r = requests.get(self.img_urls[i], stream=True)
-                with open(str(i+1) + self.ext, 'wb') as outfile:
-                    outfile.write(r.content)
-
-            print(
-                f'\n******** {len(self.img_urls)} Images downloaded.********')
-        except Exception as e:
-            print(
-                f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
-
-    def __zip_images(self, directory):
-        try:
-            '''Zips the contents of the Directory'''
-            directory = directory.split('\\')[-1]
-            shutil.make_archive(directory, 'zip', directory)
-            print(f'\nZip Successful.')
-        except Exception as e:
-            print(
-                f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
-
-    def __send_mail(self, directory):
-        try:
-            email.send_mail(directory, self.caption)
-        except Exception as e:
-            raise Exception(e)
 
     def start(self):
         if self.invalid_url == False:
-            self.__create_random_directory()
+            dir_name = super().create_random_directory('IB')
             self.__get_img_urls()
-            self.__download()
+            super().download()
             if not os.listdir():
                 # Deleting the imgs_directory if empty
                 os.chdir(self.main_dir)
                 os.rmdir(self.imgs_dir)
                 self.invalid_url = True
                 print('Empty Directory deleted.')
-                return self.invalid_url
+                return (self.invalid_url, dir_name)
+            
             # Navigating back to the main directory
             os.chdir(self.main_dir)
-            self.__zip_images(os.path.basename(self.imgs_dir))
+            super().zip_images(dir_name)
             
-            # Emaling the file
-            self.__send_mail(self.imgs_dir)
+            # Emailing the file
+            super().send_mail(dir_name, self.caption)
             
             # Deleting the uncompressed directory after zipping
-            shutil.rmtree(self.imgs_dir)
-            print(f'\nMain Directory deleted. <{self.imgs_dir}>\n')
+            super().delete_dir(dir_name)
         else:
             print('Invalid URL')
-            return self.invalid_url
-
-
-# Driver Code
-'''
-url = ''
-i = IB(url)
-i.start()
-
-'''
+        return (self.invalid_url, dir_name)

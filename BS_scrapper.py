@@ -1,5 +1,5 @@
 '''Blogspot/tollywoodhq/s4all Image Scrapper and Downloader. '''
-
+from Utilities import utilities
 import inspect
 import bs4 as bs
 import requests
@@ -10,15 +10,15 @@ import random
 import shutil
 import Email_send as email
 
-class BS:
+class BS(utilities):
     def __init__(self, url):
+        super().__init__()
         self.url = url
         self.headers = {
             "User-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36"}
         self.response = requests.get(self.url, self.headers)
         self.html = self.response.text
         self.soup = bs.BeautifulSoup(self.html, 'lxml')
-        self.ext = '.jpg'
         #set base_url as 'tollywoodhq.com' if url is 'tollywoodhq' else '' [for blogspots]
         self.base_url = 'https://tollywoodhq.com' if 'tollywoodhq' in self.url else ''
         # If status_code is 200 then page exists. So it is a valid URL.
@@ -26,21 +26,7 @@ class BS:
             self.invalid_url = False
         else:
             self.invalid_url = True
-        self.img_urls = []
-        self.main_dir = os.getcwd() + '\\'
         self.caption = self.url.split('/')[-1][:-5].title()
-
-
-    def create_random_directory(self):
-        name = 'BST_' + ''.join(random.choices(string.ascii_uppercase + string.digits, k = 6))
-        self.imgs_dir = self.main_dir + name
-        #Creating the new Directory
-        os.mkdir(self.imgs_dir)
-        print(f"\n'{name}' directory created")
-        #Navigating to the newly created directory
-        os.chdir(self.imgs_dir)
-
-        return self.imgs_dir
         
 
     def get_img_urls(self):
@@ -77,21 +63,6 @@ class BS:
             raise e
 
 
-    def zip_images(self, directory):
-        try:
-            '''Zips the contents of the Directory'''
-            shutil.make_archive(directory, 'zip', directory)
-            print(f'\nZip Successful.')
-        except Exception as e:
-            print(f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
-
-
-    def send_mail(self, directory):
-        try:
-            email.send_mail(directory, self.caption)
-        except Exception as e:
-            raise Exception(e)
-
 
 def start(url):
     global count
@@ -103,7 +74,7 @@ def start(url):
         bs = BS(url)
         if bs.invalid_url == False:
             # Create a directory
-            imgs_dir = bs.create_random_directory()
+            imgs_dir = bs.create_random_directory('BST')
             # Grab the page_urls 
             d = bs.soup.findAll('div', class_='separator')
             page_urls = d[1].findAll('a') if len(d) > 0 else []
@@ -143,14 +114,13 @@ def start(url):
     os.chdir(base_dir)
 
     #Zip files
-    bs.zip_images(os.path.basename(imgs_dir))
+    bs.zip_images(imgs_dir)
     print(f'\nCaption: {bs.caption}\n')
 
     # Deleting the gallery directory
-    shutil.rmtree(imgs_dir)
-    print(f'Main directory deleted: {imgs_dir}')
+    bs.delete_dir(imgs_dir)
     
     # Email the files
-    bs.send_mail(os.path.basename(imgs_dir))
+    bs.send_mail(imgs_dir, bs.caption)
     
     return (bs.invalid_url, imgs_dir)

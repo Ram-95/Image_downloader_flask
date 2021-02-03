@@ -21,10 +21,10 @@ def Idlebrain():
         if url is not None:
             print(f'\nURL: {url}\n')
             IB_obj = IB.IB(url)
-            invalid_url = IB_obj.start()
-            zip_file_name = os.path.basename(IB_obj.imgs_dir) + '.zip'
+            (invalid_url, dir_name) = IB_obj.start()
+            zip_file_name = dir_name + '.zip'
             if not invalid_url:
-                print(zip_file_name)
+                print(dir_name)
                 return {'status': 'False', 'filename': zip_file_name}
             return {'status': 'True'}
     else:
