@@ -13,7 +13,7 @@ import Email_send as email
 class IB:
     def __init__(self, url):
         try:
-            self.url = url
+            self.url = url.split('#')[0]
             self.caption = url.split('/')[-2].title()
             self.base = self.url[:-10]
             self.headers = {
