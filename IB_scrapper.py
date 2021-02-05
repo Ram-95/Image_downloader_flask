@@ -1,4 +1,5 @@
-#Idlebrain - Scrapper
+'''Idlebrain - Scrapper'''
+
 import time
 import inspect
 import shutil

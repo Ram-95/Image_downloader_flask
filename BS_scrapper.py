@@ -1,4 +1,4 @@
-'''Blogspot/tollywoodhq/s4all Image Scrapper and Downloader. '''
+'''Blogspot/tollywoodhq/s4all Image Scrapper and Downloader'''
 
 import inspect
 import bs4 as bs
