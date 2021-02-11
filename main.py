@@ -16,75 +16,92 @@ def homepage():
 @app.route('/IB', methods=['GET', 'POST'])
 def Idlebrain():
     error = None
-    if request.method == 'GET':
-        url = request.args.get("url")
-        if url is not None:
-            print(f'\nURL: {url}\n')
-            IB_obj = IB.IB(url)
-            invalid_url = IB_obj.start()
-            zip_file_name = os.path.basename(IB_obj.imgs_dir) + '.zip'
-            if not invalid_url:
-                print(zip_file_name)
-                return {'status': 'False', 'filename': zip_file_name}
-            return {'status': 'True'}
-    else:
-        error = 'Invalid URL'
-    return render_template('IB.html', error=error)
+    try:
+        if request.method == 'GET':
+            url = request.args.get("url")
+            if url is not None:
+                print(f'\nURL: {url}\n')
+                IB_obj = IB.IB(url)
+                invalid_url = IB_obj.start()
+                zip_file_name = os.path.basename(IB_obj.imgs_dir) + '.zip'
+                if not invalid_url:
+                    print(zip_file_name)
+                    return {'status': 'False', 'filename': zip_file_name}
+                return {'status': 'True'}
+        else:
+            error = 'Invalid URL'
+        return render_template('IB.html', error=error)
+    except Exception as e:
+        print(f'EXCEPTION!\n{e}')
+        return {'status': 'Exception'}
 
 
 @app.route('/RG', methods=['GET', 'POST'])
 def ragalahari():
     error = None
-    if request.method == 'GET':
-        url = request.args.get("url")
-        if url is not None:
-            print(f'\nURL: {url}\n')
-            (invalid_url, dir_name) = RG.start(url)
-            zip_file_name = os.path.basename(dir_name) + '.zip'
-            if not invalid_url:
-                print(zip_file_name)
-                return {'status': 'False', 'filename': zip_file_name}
-            return {'status': 'True'}
-    else:
-        error = 'Invalid URL'
-    return render_template('RG.html', error=error)
+    try:
+        if request.method == 'GET':
+            url = request.args.get("url")
+            if url is not None:
+                print(f'\nURL: {url}\n')
+                (invalid_url, dir_name) = RG.start(url)
+                zip_file_name = os.path.basename(dir_name) + '.zip'
+                if not invalid_url:
+                    print(zip_file_name)
+                    return {'status': 'False', 'filename': zip_file_name}
+                return {'status': 'True'}
+        else:
+            error = 'Invalid URL'
+        return render_template('RG.html', error=error)
+    except Exception as e:
+        print(f'EXCEPTION!\n{e}')
+        return {'status': 'Exception'}
 
 
 @app.route('/CJ', methods=['GET', 'POST'])
 def cinejosh():
     error = None
-    if request.method == 'GET':
-        url = request.args.get("url")
-        if url is not None:
-            print(f'\nURL: {url}\n')
-            (invalid_url, dir_name) = CJ.start(url)
-            zip_file_name = os.path.basename(dir_name) + '.zip'
-            if not invalid_url:
-                print(zip_file_name)
-                return {'status': 'False', 'filename': zip_file_name}
-            return {'status': 'True'}
-            
-    else:
-        error = 'Invalid URL'
-    return render_template('CJ.html', error=error)
+    try:
+        if request.method == 'GET':
+            url = request.args.get("url")
+            if url is not None:
+                print(f'\nURL: {url}\n')
+                (invalid_url, dir_name) = CJ.start(url)
+                zip_file_name = os.path.basename(dir_name) + '.zip'
+                if not invalid_url:
+                    print(zip_file_name)
+                    return {'status': 'False', 'filename': zip_file_name}
+                return {'status': 'True'}
+                
+        else:
+            error = 'Invalid URL'
+        return render_template('CJ.html', error=error)
+    except Exception as e:
+        print(f'EXCEPTION!\n{e}')
+        return {'status': 'Exception'}
+
 
 
 @app.route('/BS', methods=['GET', 'POST'])
 def bst():
     error = None
-    if request.method == 'GET':
-        url = request.args.get("url")
-        if url is not None:
-            print(f'\nURL: {url}\n')
-            (invalid_url, dir_name) = BS.start(url)
-            zip_file_name = os.path.basename(dir_name) + '.zip'
-            if not invalid_url:
-                print(zip_file_name)
-                return {'status': 'False', 'filename': zip_file_name}
-            return {'status': 'True'}
-    else:
-        error = 'Invalid URL'
-    return render_template('BS.html', error=error)
+    try:
+        if request.method == 'GET':
+            url = request.args.get("url")
+            if url is not None:
+                print(f'\nURL: {url}\n')
+                (invalid_url, dir_name) = BS.start(url)
+                zip_file_name = os.path.basename(dir_name) + '.zip'
+                if not invalid_url:
+                    print(zip_file_name)
+                    return {'status': 'False', 'filename': zip_file_name}
+                return {'status': 'True'}
+        else:
+            error = 'Invalid URL'
+        return render_template('BS.html', error=error)
+    except Exception as e:
+        print(f'EXCEPTION!\n{e}')
+        return {'status': 'Exception'}
 
 
 @app.route('/favicon.ico')
@@ -108,12 +125,6 @@ def download():
     else:
         return "<h3>Internal Error!</h3>"
 
-
-
-
-@app.route('/hello')
-def hello(name=None):
-    return render_template('homepage.html', name=name)
 
 @app.route('/about')
 def about():

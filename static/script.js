@@ -43,7 +43,7 @@ $(document).ready(function () {
     function if_ajax_invalid_url() {
         $('.loader').css('display', 'none');
         $('.status').css('color', 'red');
-        $('.status').text('Invalid URL/Not Found');
+        $('.status').text('Invalid URL/Not Found/Internal Error.');
     }
 
     function if_ajax_valid_url() {
