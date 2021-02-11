@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-<script data-ad-client="ca-pub-3357421394111343" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script data-ad-client="ca-pub-3357421394111343" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     {% block head %}
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <meta charset="UTF-8">
@@ -21,6 +22,12 @@
 </head>
 
 <body>
+    <div class="border">
+        <div class="navigation">
+            <a href="{{ url_for('homepage') }}">Home</a>
+            <a href="{{ url_for('about') }}">About</a>
+        </div>
+    </div>
     <div class="content">
         {% block content %}
         {% endblock %}
@@ -34,10 +41,6 @@
         <div class="download_div">
             <a class="download_btn btn btn-success">Download</a>
         </div>
-    </div>
-    <div class="navbar-section footer">
-        <a href="#">Home</a>
-        <a href="{{ url_for('about') }}">About</a>
     </div>
 </body>
 
