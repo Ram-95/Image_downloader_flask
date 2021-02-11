@@ -135,11 +135,30 @@ body {
     margin-left: 1rem;
 }
 
+.navbar-section a {
+    color: white;
+    font-size: 1rem;
+    text-decoration: none;
+    margin-right: 1em;
+}
+
+.navbar-section a:hover {
+    color: white;
+    border-bottom: 1px solid white;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 50px;
+    background-color: rgb(34, 33, 33);
+    padding: 10px;
+    text-align: center;
+ }
+
 /* End of CSS of homepage.html*/
-
-/* CSS for RG.html */
-
-/* End of CSS for RG.html */
 
 /* Media Queries */
 
