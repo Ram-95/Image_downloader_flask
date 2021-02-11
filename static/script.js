@@ -32,7 +32,7 @@ $(document).ready(function () {
         $('.notify').css('visibility', 'visible');
         $('.loader').css('display', '');
         $('.loader').css('visibility', 'visible');
-        $('.status').css('color', 'blue');
+        $('.status').css('color', '#fafa2a');
         $('.status').text('Processing... This may take a few minutes...');
     }
 
@@ -42,13 +42,13 @@ $(document).ready(function () {
 
     function if_ajax_invalid_url() {
         $('.loader').css('display', 'none');
-        $('.status').css('color', 'red');
+        $('.status').css('color', '#f9f6f6');
         $('.status').text('Invalid URL/Not Found/Internal Error.');
     }
 
     function if_ajax_valid_url() {
         $('.loader').css('display', 'none');
-        $('.status').css('color', 'green');
+        $('.status').css('color', '#cafac5');
         $('.status').text('Images downloaded successfully.');
         $('.download_btn').css('visibility', 'visible');
         
@@ -89,6 +89,7 @@ $(document).ready(function () {
 
     /* Sending Data to backend Functionality */
     $('.fetch').on('click', function () {
+        $('.download_btn').css('visibility', '');
         site = $(this).attr("id");
         //alert('Site: ' + site);
         url = $("." + site + "_url").val().trim();
