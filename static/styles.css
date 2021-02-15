@@ -19,6 +19,7 @@ body {
     font-size: 3rem;
     font-family: cursive;
     font-weight: 600;
+	margin-top: 3rem;
 }
 
 .notify {
@@ -157,7 +158,7 @@ body {
 
 
 .about-section ul {
-    margin-left: 3rem;
+    margin-left: 2rem;
 }
 
 .about div {
@@ -208,4 +209,7 @@ body {
     .main_container {
         margin: 25% auto;
     }
+	.title {
+		font-size: 2.2rem;
+	}
 }
