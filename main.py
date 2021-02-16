@@ -8,6 +8,7 @@ import BS_scrapper as BS
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def homepage():
     return render_template('homepage.html')
@@ -72,14 +73,13 @@ def cinejosh():
                     print(zip_file_name)
                     return {'status': 'False', 'filename': zip_file_name}
                 return {'status': 'True'}
-                
+
         else:
             error = 'Invalid URL'
         return render_template('CJ.html', error=error)
     except Exception as e:
         print(f'EXCEPTION!\n{e}')
         return {'status': 'Exception'}
-
 
 
 @app.route('/BS', methods=['GET', 'POST'])
@@ -107,11 +107,10 @@ def bst():
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
-                          'favicon.ico',mimetype='image/vnd.microsoft.icon')
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
-
-@app.route('/download', methods = ['GET', 'POST'])
+@app.route('/download', methods=['GET', 'POST'])
 def download():
     if request.method == 'GET':
         file_path = request.args.get("filepath")
@@ -129,6 +128,13 @@ def download():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+
+@app.route('/robots.txt')
+@app.route('/sitemap.xml')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
+
 
 if __name__ == '__main__':
     app.run(debug=True)
