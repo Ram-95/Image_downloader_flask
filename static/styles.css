@@ -19,7 +19,7 @@ body {
     font-size: 3rem;
     font-family: cursive;
     font-weight: 600;
-	margin-top: 3rem;
+    margin-top: 3rem;
 }
 
 .notify {
@@ -156,7 +156,6 @@ body {
     margin-bottom: 1rem;
 }
 
-
 .about-section ul {
     margin-left: 2rem;
 }
@@ -181,6 +180,27 @@ body {
 .navigation a:hover {
     text-decoration: none;
     border-bottom: 2px solid white;
+}
+
+.footer {
+    padding: 8px;
+    background-color: #2f2d2d;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+
+.footer a {
+    color: white;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: yellow;
 }
 
 /* End of CSS of homepage.html*/
@@ -209,7 +229,7 @@ body {
     .main_container {
         margin: 25% auto;
     }
-	.title {
-		font-size: 2.2rem;
-	}
+    .title {
+        font-size: 2.2rem;
+    }
 }

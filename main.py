@@ -130,6 +130,11 @@ def about():
     return render_template('about.html')
 
 
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
+
 @app.route('/robots.txt')
 @app.route('/sitemap.xml')
 def static_from_root():
