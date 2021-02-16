@@ -135,6 +135,10 @@ def privacy():
     return render_template('privacy.html')
 
 
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
 @app.route('/robots.txt')
 @app.route('/sitemap.xml')
 def static_from_root():

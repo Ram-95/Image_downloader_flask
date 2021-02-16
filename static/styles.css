@@ -6,6 +6,7 @@
 
 body {
     background-color: rgb(148, 34, 34);
+    margin-bottom: 30px;
 }
 
 .root {
@@ -150,7 +151,7 @@ body {
     margin-top: 4rem;
 }
 
-.about-section h2 {
+.sub_title {
     font-size: 1.8rem;
     border-bottom: 1px solid white;
     margin-bottom: 1rem;
@@ -184,6 +185,7 @@ body {
 
 .footer {
     padding: 8px;
+    clear: both;
     background-color: #2f2d2d;
     position: fixed;
     left: 0;
@@ -191,6 +193,7 @@ body {
     width: 100%;
     color: white;
     text-align: center;
+    height: 40px;
 }
 
 .footer a {
