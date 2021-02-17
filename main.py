@@ -145,5 +145,9 @@ def static_from_root():
     return send_from_directory(app.static_folder, request.path[1:])
 
 
+@app.route('/privacy_policy')
+def privacy_policy():
+    return render_template('privacy_policy.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
