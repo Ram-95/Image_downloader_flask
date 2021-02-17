@@ -17,6 +17,10 @@
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <!--CSS file-->
     <link rel="stylesheet" href="/static/styles.css">
+    <!--Fontawesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+        integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+        crossorigin="anonymous" />
     <script src="/static/script.js"></script>
     {% endblock %}
 </head>
@@ -24,7 +28,7 @@
 <body>
     <div class="border">
         <div class="navigation">
-            <a href="{{ url_for('homepage') }}">Home</a>
+            <a href="{{ url_for('homepage') }}"><i class="fas fa-home"></i>&nbsp;Home</a>
         </div>
     </div>
     <div class="content">
@@ -38,14 +42,14 @@
             <span class="status"></span>
         </div>
         <div class="download_div">
-            <a class="download_btn btn btn-success">Download</a>
+            <a class="download_btn btn btn-success"><i class="fas fa-download"></i>&nbsp;Download</a>
         </div>
     </div>
-    
+
     <footer class="footer mt-auto">
-            <a href="{{ url_for('about') }}" class="mr-3">About</a>
-            <a href="{{ url_for('privacy') }}" class="mr-3">Privacy</a>
-            <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="{{ url_for('about') }}" class="mr-3">About</a>
+        <a href="{{ url_for('privacy') }}" class="mr-3">Privacy</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
     </footer>
 </body>
 

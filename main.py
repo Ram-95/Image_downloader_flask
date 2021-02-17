@@ -1,10 +1,12 @@
-from flask import Flask, escape, request, render_template, send_from_directory, url_for, send_file
-import IB_scrapper as IB
 import os
-import RG_scrapper as RG
-import CJ_scrapper as CJ
-import BS_scrapper as BS
 
+from flask import (Flask, escape, render_template, request, send_file,
+                   send_from_directory, url_for)
+
+import BS_scrapper as BS
+import CJ_scrapper as CJ
+import IB_scrapper as IB
+import RG_scrapper as RG
 
 app = Flask(__name__)
 
