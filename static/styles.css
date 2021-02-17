@@ -206,6 +206,13 @@ body {
     color: yellow;
 }
 
+iframe {
+    margin-top: 2rem;
+    width: 100%;
+    height: 32rem;
+    border: none;
+}
+
 /* End of CSS of homepage.html*/
 
 /* Media Queries */
