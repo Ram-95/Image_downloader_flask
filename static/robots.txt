@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 Disallow: /cgi-bin/
-Sitemap: /sitemap.xml
+Sitemap: https://image-downloader-flask.herokuapp.com/sitemap.xml
