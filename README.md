@@ -17,7 +17,6 @@ A flask app to scrape and download images from websites like - Idlebrain, Ragala
         set FLASK_DEBUG=True
         
         ::Starting the flask server
-        ECHO Starting Flask Server
         flask run
         
         PAUSE```
