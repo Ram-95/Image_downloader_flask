@@ -8,7 +8,6 @@ import requests
 import random
 import string
 import os
-import Email_send as email
 
 
 class IB:
@@ -105,12 +104,7 @@ class IB:
             print(
                 f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
 
-    def __send_mail(self, directory):
-        try:
-            email.send_mail(directory, self.caption)
-        except Exception as e:
-            raise Exception(e)
-
+    
     def start(self):
         if self.invalid_url == False:
             self.__create_random_directory()
@@ -127,9 +121,6 @@ class IB:
             os.chdir(self.main_dir)
             self.__zip_images(os.path.basename(self.imgs_dir))
             
-            # Emaling the file
-            self.__send_mail(self.imgs_dir)
-            
             # Deleting the uncompressed directory after zipping
             shutil.rmtree(self.imgs_dir)
             print(f'\nMain Directory deleted. <{self.imgs_dir}>\n')
@@ -143,5 +134,4 @@ class IB:
 url = ''
 i = IB(url)
 i.start()
-
 '''

@@ -8,7 +8,6 @@ import string
 import bs4 as bs
 import urllib.request
 import requests
-import Email_send as email
 
 
 class CJ:
@@ -102,12 +101,6 @@ class CJ:
             print(
                 f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
 
-    def send_mail(self, directory, caption):
-        try:
-            email.send_mail(directory, caption)
-        except Exception as e:
-            raise Exception(e)
-
 
 ''' Driver code '''
 def start(url):
@@ -149,8 +142,6 @@ def start(url):
         shutil.rmtree(dir_name)
         print(f'Main directory deleted: {dir_name}')
         
-        # Emailing the file
-        cj.send_mail(os.path.basename(dir_name), caption)
     else:
         print(f'\nInvalid URL.\n')
     

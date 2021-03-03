@@ -8,7 +8,6 @@ import string
 import bs4 as bs
 import urllib.request
 import requests
-import Email_send as email
 
 
 class RG:
@@ -93,12 +92,6 @@ class RG:
             print(
                 f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
 
-    def send_mail(self, directory, caption):
-        try:
-            email.send_mail(directory, caption)
-        except Exception as e:
-            raise Exception(e)
-
 
 # Driver Code
 ''' Function that initiates scrapping. '''
@@ -136,9 +129,6 @@ def start(url):
         # Deleting the gallery directory
         shutil.rmtree(dir_name)
         print(f'Main directory deleted: {dir_name}')
-
-        # Emailing the file
-        rg.send_mail(os.path.basename(dir_name), caption)
         
     else:
         print('\nInvalid URL\n')

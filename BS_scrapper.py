@@ -8,7 +8,6 @@ import os
 import string
 import random
 import shutil
-import Email_send as email
 
 class BS:
     def __init__(self, url):
@@ -86,13 +85,6 @@ class BS:
             print(f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
 
 
-    def send_mail(self, directory):
-        try:
-            email.send_mail(directory, self.caption)
-        except Exception as e:
-            raise Exception(e)
-
-
 def start(url):
     global count
     count = 0
@@ -149,8 +141,5 @@ def start(url):
     # Deleting the gallery directory
     shutil.rmtree(imgs_dir)
     print(f'Main directory deleted: {imgs_dir}')
-    
-    # Email the files
-    bs.send_mail(os.path.basename(imgs_dir))
     
     return (bs.invalid_url, imgs_dir)
