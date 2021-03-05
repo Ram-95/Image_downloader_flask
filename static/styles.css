@@ -213,6 +213,11 @@ iframe {
     border: none;
 }
 
+.about-section span {
+    color: white;
+    font-weight: 600;
+}
+
 /* End of CSS of homepage.html*/
 
 /* Media Queries */
