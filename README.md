@@ -21,6 +21,5 @@ A flask app to scrape and download images from websites like - Idlebrain, Ragala
         flask run
         
         PAUSE
-        ```
 
 #### All the images will be saved to a directory, will be zipped and available for download.
