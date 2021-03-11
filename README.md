@@ -14,7 +14,7 @@ A flask app to scrape and download images from websites like - Idlebrain, Ragala
         :: Setting the FLASK_APP to main.py
         set FLASK_APP=main.py
         
-        :: Setting DEBUG as True/False. Always set to 'True' in Dev environment and 'False' in Prod.
+        :: Setting DEBUG as True/False. Always set to 'True' in Dev environment and 'False' in Prod environment.
         set FLASK_DEBUG=True
         
         ::Starting the flask server
