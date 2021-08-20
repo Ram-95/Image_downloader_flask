@@ -6,8 +6,9 @@ import shutil
 import inspect
 import string
 import bs4 as bs
-import urllib.request
 import requests
+import time
+import concurrent.futures
 
 
 class CJ:
@@ -25,13 +26,14 @@ class CJ:
             self.invalid_url = False
         else:
             self.invalid_url = True
-        
+
         # Check if the URL is a gallery URL
-        self.is_gallery = self.soup.findAll('div', class_='container-gal-thumbs')
+        self.is_gallery = self.soup.findAll(
+            'div', class_='container-gal-thumbs')
         # If the URL is not a gallery URL, then set invalid_url to True
         if self.is_gallery is None or self.is_gallery == []:
             self.invalid_url = True
-        
+
         self.paging_exists = self.soup.find('ul', class_='pagination')
         if self.paging_exists:
             self.t = self.paging_exists.findAll('li')
@@ -42,7 +44,7 @@ class CJ:
         '''Returns the number of pages.'''
         return len(self.t) if self.t is not None else 0
 
-    def get_page_urls(self):
+    def get_page_urls(self) -> list:
         '''Scrapes the urls of respective pages and saves it in a list.'''
         pages_url_list = []
         pages_url_list.append(self.url)
@@ -51,30 +53,6 @@ class CJ:
             pages_url_list.append(self.base_url + self.t[i].find('a')['href'])
         print('Page URLs captured')
         return pages_url_list
-
-    def download_images(self, page_no):
-        '''Scrapes the urls of images and saves them in list.'''
-        global count
-        d = self.soup.findAll('div', class_='container-gal-thumbs')
-        if d is None or d == []:
-            self.invalid_url = True
-            return self.invalid_url
-        
-        print(f'Page {page_no}: Downloading Images...\n')
-        for i in d:
-            temp = self.base_url + i.find('img', class_='img-thumbnail')['src']
-            if '/small' in temp:
-                temp = temp.replace('/small', '')
-
-            if 'thumb' in temp:
-                temp = temp.replace('thumb', 'normal')
-            # Downloading Code
-            r = requests.get(temp, stream=True)
-            with open(str(count) + self.ext, 'wb') as outfile:
-                outfile.write(r.content)
-            count += 1
-
-        print(f'Page {page_no}: {count} Images Download Complete.\n\n')
 
     def create_dir(self, base_dir):
         # Generates a alpha-numberic random name of length = 6
@@ -102,6 +80,34 @@ class CJ:
                 f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
 
 
+def get_image_urls(page: str) -> list:
+    '''Gets the image urls from all the pages.'''
+    cj = CJ(page)
+    d = cj.soup.findAll('div', class_='container-gal-thumbs')
+    img_urls = []
+    if d is None or d == []:
+        cj.invalid_url = True
+        return cj.invalid_url
+    for i in d:
+        temp = cj.base_url + i.find('img', class_='img-thumbnail')['src']
+        if '/small' in temp:
+            temp = temp.replace('/small', '')
+
+        if 'thumb' in temp:
+            temp = temp.replace('thumb', 'normal')
+        img_urls.append(temp)
+
+    return img_urls
+
+
+def download_imgs(img_url: str) -> None:
+    '''Downloads the image at the given url'''
+    title = img_url.split('/')[-1]
+    r = requests.get(img_url, stream=True)
+    with open(title, 'wb') as outfile:
+        outfile.write(r.content)
+
+
 ''' Driver code '''
 def start(url):
     # Creating an CJ Object
@@ -118,16 +124,27 @@ def start(url):
 
         # Creating a Random directory
         dir_name = cj.create_dir(base_dir)
-    
+
         # Global variable to name the images
         global count
         count = 1
 
-        # Creating an CJ object of all the pages urls and downloading
-        for i in range(len(pages)):
-            cj = CJ(pages[i])
-            cj.download_images(i+1)
-        print(f'**** {count} images downloaded. ****')
+        global_img_urls = []
+        #### Threads for Getting Image URLs from each page ####
+        start = time.perf_counter()
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            for res in executor.map(get_image_urls, pages):
+                global_img_urls += res
+        finish = time.perf_counter()
+        print(f'Global Image URLs size: {len(global_img_urls)}')
+        print(f'Get Image URLs: {round(finish-start,2)} second(s).')
+
+        #### Threads for downloading images #####
+        start = time.perf_counter()
+        with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
+            executor.map(download_imgs, global_img_urls)
+        finish = time.perf_counter()
+        print(f'Downloading images took: {round(finish-start,2)} second(s).')
 
         # Extracting the gallery name
         caption = cj.soup.find('h1', itemprop='headline').text
@@ -141,8 +158,8 @@ def start(url):
         # Deleting the gallery directory
         shutil.rmtree(dir_name)
         print(f'Main directory deleted: {dir_name}')
-        
+
     else:
         print(f'\nInvalid URL.\n')
-    
+
     return (cj.invalid_url, dir_name)
