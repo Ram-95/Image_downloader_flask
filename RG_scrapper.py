@@ -8,6 +8,8 @@ import string
 import bs4 as bs
 import urllib.request
 import requests
+import time
+import concurrent.futures
 
 
 class RG:
@@ -93,10 +95,33 @@ class RG:
                 f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
 
 
+def get_image_urls(page: str) -> list:
+    rg = RG(page)
+    img_urls = []
+    gallery_exists = rg.soup.find('div', id='galdiv')
+    d = gallery_exists.findAll('img', class_='thumbnail')
+    if d is None or d == []:
+        d = gallery_exists.findAll('img')
+    for i in d:
+        x = i['src']
+        x = x.replace('t.jpg', '.jpg')
+        img_urls.append(x)
+    
+    return img_urls
+
+
+def download_images(img_url: str) -> None:
+    title = img_url.split('/')[-1]
+    r = requests.get(img_url, stream=True)
+    with open(title, 'wb') as outfile:
+        outfile.write(r.content)
+
+
 # Driver Code
 ''' Function that initiates scrapping. '''
 def start(url):
     # Creating an RG object
+    start = time.perf_counter()
     rg = RG(url)
     if rg.invalid_url == False:
         # Global variable - Base directory
@@ -110,16 +135,17 @@ def start(url):
         dir_name = rg.create_dir(base_dir)
         caption = url.split('/')[-1].split('.')[0]
 
-        # Global variable to name the images
-        global count
-        count = 1
-
-        # Creating an RG object of all the pages urls and downloading
-        for i in range(len(pages)):
-            rg = RG(pages[i])
-            rg.download_images(i+1)
-        print(f'**** {count} images downloaded. ****')
-
+        global_img_urls = []
+        ### Threads to get all the image urls from each page
+        
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            for res in executor.map(get_image_urls, pages):
+                global_img_urls += res
+        
+        #### Threads to download images
+        with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+            executor.map(download_images, global_img_urls)
+        
         # Navigation to the base directory after downloading is complete
         os.chdir(base_dir)
 
@@ -129,6 +155,8 @@ def start(url):
         # Deleting the gallery directory
         shutil.rmtree(dir_name)
         print(f'Main directory deleted: {dir_name}')
+        finish = time.perf_counter()
+        print(f'Time Taken: {round(finish-start,2)} second(s).\n')
         
     else:
         print('\nInvalid URL\n')
