@@ -3,7 +3,8 @@
 import inspect
 import bs4 as bs
 import requests
-import urllib.request
+import time
+import concurrent.futures
 import os
 import string
 import random
@@ -51,7 +52,7 @@ class BS:
                     if temp.startswith('http'):
                         self.img_urls.append(self.base_url + temp)
                     else:
-                        self.img_urls.append(self.base_url + 'http:' + temp)
+                        self.img_urls.append(self.base_url + temp)
             except Exception:
                 continue
         #print(self.img_urls)
@@ -85,9 +86,17 @@ class BS:
             print(f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
 
 
+def download_images(img_url: str) -> None:
+    title = img_url.split('/')[-1]
+    r = requests.get(img_url, stream=True)
+    with open(title, "wb") as outfile:
+        outfile.write(r.content)
+
+
 def start(url):
     global count
     count = 0
+    start = time.perf_counter()
     base_dir = os.getcwd()
 
     if url.startswith('http://sumon4all.blogspot.com'):
@@ -122,8 +131,10 @@ def start(url):
             # Continue only if the img_urls are captured.
             if bs.img_urls:
                 imgs_dir = bs.create_random_directory()
-                bs.download()
-                print(f'\n******** {count} Images downloaded.********')
+                with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+                    executor.map(download_images, bs.img_urls)
+                #bs.download()
+                print(f'\n******** {len(bs.img_urls)} Images downloaded.********')
             else:
                 bs.invalid_url = True
                 return bs.invalid_url
@@ -141,5 +152,6 @@ def start(url):
     # Deleting the gallery directory
     shutil.rmtree(imgs_dir)
     print(f'Main directory deleted: {imgs_dir}')
-    
+    finish = time.perf_counter()
+    print(f'\nProcess completed in: {round(finish-start,2)} second(s).\n')
     return (bs.invalid_url, imgs_dir)
