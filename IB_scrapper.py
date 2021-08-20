@@ -8,7 +8,7 @@ import requests
 import random
 import string
 import os
-
+import concurrent.futures
 
 class IB:
     def __init__(self, url):
@@ -80,16 +80,12 @@ class IB:
             print(
                 f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
 
-    def __download(self):
+    def __download(self, img_url: str) -> None:
         try:
-            print(f'\nDownloading in progress...\n')
-            for i in range(len(self.img_urls)):
-                r = requests.get(self.img_urls[i], stream=True)
-                with open(str(i+1) + self.ext, 'wb') as outfile:
-                    outfile.write(r.content)
-
-            print(
-                f'\n******** {len(self.img_urls)} Images downloaded.********')
+            title = img_url.split('/')[-1]
+            r = requests.get(img_url, stream=True)
+            with open(title, 'wb') as outfile:
+                outfile.write(r.content)
         except Exception as e:
             print(
                 f'***** EXCEPTION in "{inspect.stack()[0].function}()" *****\n{e}')
@@ -109,7 +105,12 @@ class IB:
         if self.invalid_url == False:
             self.__create_random_directory()
             self.__get_img_urls()
-            self.__download()
+            start = time.perf_counter()
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                executor.map(self.__download, self.img_urls)
+            finish = time.perf_counter()
+            print(f'\nDownloading completed in {round(finish-start,2)} second(s).\n')
+            #self.__download()
             if not os.listdir():
                 # Deleting the imgs_directory if empty
                 os.chdir(self.main_dir)
