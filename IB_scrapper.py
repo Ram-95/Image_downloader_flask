@@ -102,15 +102,15 @@ class IB:
 
     
     def start(self):
+        start = time.perf_counter()
         if self.invalid_url == False:
             self.__create_random_directory()
             self.__get_img_urls()
-            start = time.perf_counter()
+            
+            # Threads to download images
             with concurrent.futures.ThreadPoolExecutor() as executor:
                 executor.map(self.__download, self.img_urls)
-            finish = time.perf_counter()
-            print(f'\nDownloading completed in {round(finish-start,2)} second(s).\n')
-            #self.__download()
+            
             if not os.listdir():
                 # Deleting the imgs_directory if empty
                 os.chdir(self.main_dir)
@@ -125,6 +125,9 @@ class IB:
             # Deleting the uncompressed directory after zipping
             shutil.rmtree(self.imgs_dir)
             print(f'\nMain Directory deleted. <{self.imgs_dir}>\n')
+            
+            finish = time.perf_counter()
+            print(f'\n\nProcess completed in {round(finish-start,2)} second(s).\n\n')
         else:
             print('Invalid URL')
             return self.invalid_url
