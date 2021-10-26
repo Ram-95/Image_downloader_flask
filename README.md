@@ -1,6 +1,6 @@
 # Image_Downloader_Flask
 
-A web app to scrape and download images from these websites - Idlebrain, Ragalahari, Cinejosh and Blogspot/sumon4all/tollywoodhq.com galleries.
+A web app to scrape and download images from these websites - Idlebrain, Ragalahari, Cinejosh and Blogspot/tollywoodhq.com galleries.
 
 ### Steps to run the application
   - Install all the dependencies from ```requirements.txt```.
