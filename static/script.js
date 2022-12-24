@@ -3,7 +3,7 @@ $(document).ready(function () {
     /* Function to check if the provided URL is really IB URL.*/
     function is_valid_url_IB(url) {
         // Regular expression for: http://www.idlebrain.com/movie/photogallery/<Galleryname>/index.html
-        return /^(http:\/\/)(www\.)?idlebrain.com\/movie\/photogallery\//.test(url);
+        return /^(http(s)?:\/\/)(www\.)?idlebrain.com\/movie\/photogallery\//.test(url);
     }
 
     function is_valid_url_RG(url) {
